@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - Quillmate</title>
+  <link rel="stylesheet" href="Homepage.css" />
+</head>
+<script>
+    function confirmSubmit() {
+      return confirm("Are you sure you want to submit this form?");
+    }
+  </script>
+  <script>
+    function validateOrderForm() {
+      const form = document.querySelector('.order-form');
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const service = form.service.value;
+      const pkg = form.package.value;
+      const file = form.file.files.length;
+      let errors = [];
+  
+      if (name.length < 2) errors.push('Name must be at least 2 characters.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Enter a valid email.');
+      if (!service) errors.push('Please select a service.');
+      if (!pkg) errors.push('Please select a package.');
+      if (file === 0) errors.push('Please upload your file.');
+  
+      if (errors.length) {
+        alert(errors.join('\n'));
+        return false;  // prevent submit
+      }
+      return confirm('Are you sure you want to submit this order?');
+    }
+  
+    function validateContactForm() {
+      const form = document.querySelector('.contact-form');
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      let errors = [];
+  
+      if (name.length < 2) errors.push('Name must be at least 2 characters.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Enter a valid email.');
+      if (message.length < 10) errors.push('Message must be at least 10 characters.');
+  
+      if (errors.length) {
+        alert(errors.join('\n'));
+        return false;
+      }
+      return confirm('Send your message?');
+    }
+  </script>
+  
+<body>
+  <header class="navbar">
+    <div class="logo">Quillmate</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="Homepage.html">Home</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="order.html">Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="contact-section">
+    <h2>Contact Us</h2>
+    <p class="contact-intro">Have a question or a custom request? Reach out to us below.</p>
+
+    <form class="contact-form" onsubmit="return validateContactForm()" action="https://formspree.io/f/mkgrjrnw" method="POST">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required minlength="2" placeholder="Enter your name" />
+      
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email" />
+      
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" rows="5" required minlength="10" placeholder="Write your message here..."></textarea>
+      
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+      
+
+    <div class="contact-info">
+      <h3>Other Ways to Reach Us</h3>
+      <p>📧 Email: <strong>quillmatee@gmail.com</strong></p>
+      <p>📱 WhatsApp: <strong>+91 7708246122</strong></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Contact us: quillmatee@gmail.com</p>
+  </footer>
+</body>
+</html>

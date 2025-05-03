@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+  </head>
+  <body>
+    <button id="upload_widget">Upload</button>
+    <script>
+      const widget = cloudinary.createUploadWidget({
+        cloudName: 'dtomhwg8i',
+        uploadPreset: 'quill_upload'
+      }, (error, result) => {
+        console.log(error, result);
+      });
+
+      document.getElementById("upload_widget").addEventListener("click", function () {
+        widget.open();
+      }, false);
+    </script>
+  </body>
+</html>

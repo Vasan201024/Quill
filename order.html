@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Place Order - Quillmate</title>
+  <link rel="stylesheet" href="Homepage.css" />
+  <style>
+    /* Style to center the buttons */
+    .payment-info {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    #payment-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    
+    .payment-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #fff;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .payment-btn img {
+      height: 40px; /* Adjust size of the logos */
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .phonepe {
+      background-color: #00A2E8; /* PhonePe brand color */
+    }
+
+    .gpay {
+      background-color: #4285F4; /* GPay brand color */
+    }
+
+    .paytm {
+      background-color: #0066CC; /* Paytm brand color */
+    }
+
+    .payment-btn:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Quillmate</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="Homepage.html">Home</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="order.html">Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="order-form-section">
+    <h2>Place Your Order</h2>
+    <form class="order-form" onsubmit="return validateOrderForm()" action="https://formspree.io/f/mkgrjrnw" method="POST">
+    
+        <input type="hidden" name="_redirect" value="thankyou.html" />
+      
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required minlength="2" placeholder="Enter your name" />
+
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email" />
+
+        <label for="service">Select Service</label>
+        <select id="service" name="service" required>
+          <option value="">Choose one</option>
+          <option value="assignment">Assignment</option>
+          <option value="record">Record</option>
+          <option value="classnote">Class Note</option>
+        </select>
+
+        <label for="package">Select Package</label>
+        <select id="package" name="package" required onchange="updatePaymentOptions()">
+          <option value="">Choose one</option>
+          <option value="basic">Basic 4-5 days</option>
+          <option value="standard">Standard 3-4 days</option>
+          <option value="premium">Premium 2-3 days</option>
+        </select>
+
+        <!-- Dropbox Upload Section -->
+        <label>Upload Your File</label>
+        <a href="https://www.dropbox.com/request/6ZytyEzku2GUEharBSRk" target="_blank" class="btn" style="margin-bottom: 8px;">Upload via Dropbox</a>
+        <p style="font-size: 0.9em;">After uploading your file, copy the **file name** and paste it below.</p>
+        <input type="text" id="file_name" name="file_name" placeholder="Enter uploaded file name" required />
+
+        <label for="instructions">Instructions</label>
+        <textarea id="instructions" name="instructions" rows="4" placeholder="Any specific instructions?"></textarea>
+
+        <div class="payment-info" id="payment-buttons" style="display: none;">
+          <h3>Payment Details</h3>
+          <p>Pay via UPI:</p>
+          <div id="payment-options">
+            <!-- Payment buttons will be populated here based on package -->
+          </div>
+        </div>
+
+        <input type="text" name="_gotcha" style="display:none">
+        <button type="submit" class="btn">Submit Order</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <p>Contact us: <a href="mailto:quillmatee@gmail.com">quillmatee@gmail.com</a></p>
+
+  </footer>
+
+  <script>
+    function updatePaymentOptions() {
+      const packageSelect = document.getElementById('package');
+      const selectedPackage = packageSelect.value;
+      const paymentButtonsDiv = document.getElementById('payment-buttons');
+      const paymentOptionsDiv = document.getElementById('payment-options');
+      
+      // Clear previous payment options
+      paymentOptionsDiv.innerHTML = '';
+      
+      if (selectedPackage) {
+        paymentButtonsDiv.style.display = 'block';
+        
+        let phonepeLink = "phonepe://pay?pa=sinchan2609@axl&pn=Quillmate";
+        let gpayLink = "upi://pay?pa=lovelyvasu75-3@oksbi&pn=Quillmate";
+        let paytmLink = "paytm://pay?pa=7708246122@ptyes&pn=Quillmate";
+
+        // Adjust payment options based on package (example logic)
+        if (selectedPackage === 'basic') {
+          // Basic plan: All payment options available
+          paymentOptionsDiv.innerHTML += `
+            <a href="${phonepeLink}" class="payment-btn phonepe" target="_blank"><img src="phonepe-logo.png" alt="PhonePe"> Pay via PhonePe</a>
+            <a href="${gpayLink}" class="payment-btn gpay" target="_blank"><img src="gpay-logo.png" alt="GPay"> Pay via GPay</a>
+            <a href="${paytmLink}" class="payment-btn paytm" target="_blank"><img src="paytm-logo.png" alt="Paytm"> Pay via Paytm</a>
+          `;
+        } else if (selectedPackage === 'standard') {
+          // Standard plan: Only PhonePe and GPay
+          paymentOptionsDiv.innerHTML += `
+            <a href="${phonepeLink}" class="payment-btn phonepe" target="_blank"><img src="phonepe-logo.png" alt="PhonePe"> Pay via PhonePe</a>
+            <a href="${gpayLink}" class="payment-btn gpay" target="_blank"><img src="gpay-logo.png" alt="GPay"> Pay via GPay</a>
+          `;
+        } else if (selectedPackage === 'premium') {
+          // Premium plan: Only GPay and Paytm
+          paymentOptionsDiv.innerHTML += `
+            <a href="${gpayLink}" class="payment-btn gpay" target="_blank"><img src="gpay-logo.png" alt="GPay"> Pay via GPay</a>
+            <a href="${paytmLink}" class="payment-btn paytm" target="_blank"><img src="paytm-logo.png" alt="Paytm"> Pay via Paytm</a>
+          `;
+        }
+      } else {
+        paymentButtonsDiv.style.display = 'none';
+      }
+    }
+
+    function validateOrderForm() {
+      const form = document.querySelector('.order-form');
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const service = form.service.value;
+      const pkg = form.package.value;
+      const fileName = form.file_name.value.trim();
+      let errors = [];
+
+      if (name.length < 2) errors.push('Name must be at least 2 characters.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Enter a valid email.');
+      if (!service) errors.push('Please select a service.');
+      if (!pkg) errors.push('Please select a package.');
+      if (!fileName) errors.push('Please enter the uploaded file name from Dropbox.');
+
+      if (errors.length > 0) {
+        alert(errors.join('\n'));
+        return false;
+      }
+
+      return confirm('Are you sure you want to submit this order?');
+    }
+    
+  </script>
+</body>
+</html>
